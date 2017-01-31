@@ -65,6 +65,7 @@
 
       // add class
       el.classList.add("playing");
+      audio.currentTime = 0;
       audio.play();
 
     } catch(e) { }
@@ -76,7 +77,7 @@
 
       // remove class
       el.classList.remove("playing");
-      audio.stop();
+      audio.pause();
 
     } catch(e) { }
   };
