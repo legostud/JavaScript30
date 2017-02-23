@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+<body>
+
+
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hand hour-hand"></div>
+        <div class="hand minute-hand"></div>
+        <div class="hand second-hand"></div>
+      </div>
+    </div>
+
+
+  <style>
+    @keyframes rotate-hand {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes rotate-second {
+      0% { transform: rotate(  0deg); }
+      1.666% { transform: rotate(  6deg); }
+      3.332% { transform: rotate(  12deg); }
+      4.998% { transform: rotate(  18deg); }
+      6.664% { transform: rotate(  24deg); }
+      8.33% { transform: rotate(  30deg); }
+      9.996% { transform: rotate(  36deg); }
+      11.662% { transform: rotate(  42deg); }
+      13.328% { transform: rotate(  48deg); }
+      14.994% { transform: rotate(  54deg); }
+      16.66% { transform: rotate(  60deg); }
+      18.326% { transform: rotate(  66deg); }
+      19.992% { transform: rotate(  72deg); }
+      21.658% { transform: rotate(  78deg); }
+      23.324% { transform: rotate(  84deg); }
+      24.99% { transform: rotate(  90deg); }
+      26.656% { transform: rotate(  96deg); }
+      28.322% { transform: rotate(  102deg); }
+      29.988% { transform: rotate(  108deg); }
+      31.654% { transform: rotate(  114deg); }
+      33.32% { transform: rotate(  120deg); }
+      34.986% { transform: rotate(  126deg); }
+      36.652% { transform: rotate(  132deg); }
+      38.318% { transform: rotate(  138deg); }
+      39.984% { transform: rotate(  144deg); }
+      41.65% { transform: rotate(  150deg); }
+      43.316% { transform: rotate(  156deg); }
+      44.982% { transform: rotate(  162deg); }
+      46.648% { transform: rotate(  168deg); }
+      48.314% { transform: rotate(  174deg); }
+      49.98% { transform: rotate(  180deg); }
+      51.646% { transform: rotate(  186deg); }
+      53.312% { transform: rotate(  192deg); }
+      54.978% { transform: rotate(  198deg); }
+      56.644% { transform: rotate(  204deg); }
+      58.31% { transform: rotate(  210deg); }
+      59.976% { transform: rotate(  216deg); }
+      61.642% { transform: rotate(  222deg); }
+      63.308% { transform: rotate(  228deg); }
+      64.974% { transform: rotate(  234deg); }
+      66.64% { transform: rotate(  240deg); }
+      68.306% { transform: rotate(  246deg); }
+      69.972% { transform: rotate(  252deg); }
+      71.638% { transform: rotate(  258deg); }
+      73.304% { transform: rotate(  264deg); }
+      74.97% { transform: rotate(  270deg); }
+      76.636% { transform: rotate(  276deg); }
+      78.302% { transform: rotate(  282deg); }
+      79.968% { transform: rotate(  288deg); }
+      81.634% { transform: rotate(  294deg); }
+      83.3% { transform: rotate(  300deg); }
+      84.966% { transform: rotate(  306deg); }
+      86.632% { transform: rotate(  312deg); }
+      88.298% { transform: rotate(  318deg); }
+      89.964% { transform: rotate(  324deg); }
+      91.63% { transform: rotate(  330deg); }
+      93.296% { transform: rotate(  336deg); }
+      94.962% { transform: rotate(  342deg); }
+      96.628% { transform: rotate(  348deg); }
+      98.294% { transform: rotate(  354deg); }
+      99.96% { transform: rotate(  360deg); }
+
+    }
+
+    html {
+      background:#018DED url(http://unsplash.it/1500/1000?image=881&blur=50);
+      background-size:cover;
+      font-family:'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      font-size: 2rem;
+      display:flex;
+      flex:1;
+      margin: 0;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border:20px solid white;
+      border-radius:50%;
+      margin:50px auto;
+      position: relative;
+      padding:2rem;
+      box-shadow:
+        0 0 0 4px rgba(0,0,0,0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px); /* account for the height of the clock hands */
+    }
+
+    .hand {
+      position: absolute;
+        top: 50%;
+        right: 50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      width: 45%;
+    }
+
+    .hand::after {
+      background: black;
+      display: block;
+      content: "";
+      height: 2px;
+      margin-top: 2px;
+      width: 100%;
+      transform-origin: 100%;
+    }
+
+    .hour-hand {
+      width: 40%;
+    }
+
+    .second-hand {
+      width: 50%;
+    }
+
+    .hour-hand::after {
+      animation: rotate-hand 216000s infinite;
+      height: 6px;
+      margin-top: 0;
+    }
+
+    .minute-hand::after {
+      animation: rotate-hand 3600s infinite;
+      height: 4px;
+      margin-top: 1px;
+    }
+
+    .second-hand::after {
+      animation: rotate-second 60s infinite cubic-bezier(0.07, 2.18, 0.58, 1);
+    }
+
+  </style>
+
+  <script>
+    const secondHand = document.querySelector('.second-hand');
+    const minsHand = document.querySelector('.minute-hand');
+    const hourHand = document.querySelector('.hour-hand');
+
+    const now = new Date();
+
+    const seconds = now.getSeconds();
+    const secondsDegrees = ((seconds / 60) * 360) + 90;
+    secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+    const mins = now.getMinutes();
+    const minsDegrees = ((mins / 60) * 360) + ((seconds/60)*6) + 90;
+    minsHand.style.transform = `rotate(${minsDegrees}deg)`;
+
+    const hour = now.getHours();
+    const hourDegrees = ((hour / 12) * 360) + ((mins/60)*30) + 90;
+    hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+  </script>
+</body>
+</html>
